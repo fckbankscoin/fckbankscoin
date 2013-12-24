@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-FooCoin (FOO)
+fckbankscoin (FOO)
 
 Blah, blah, blah.
 =======

@@ -29,7 +29,7 @@ CTxMemPool mempool;
 unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
-uint256 hashGenesisBlock("0xf0e62eae131f5f80d91b8f4d14253cd6e005ded29d542456a2ee3810696c8133");
+uint256 hashGenesisBlock("0x");
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // starting difficulty is 1 / 2^12
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -833,16 +833,16 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     if(nHeight == 1)
     {
     	nSubsidy = TOTAL_GENERATION * SERVICE_TAX_PERCENTAGE;
-        return nSubsidy + nFees;
+    	return nSubsidy + nFees;
     }
-     
+    
     nSubsidy >>= (nHeight / 100000);
-
-    return (nSubsidy) + nFees;
+    
+    return nSubsidy + nFees;
 }
 
-static const int64 nTargetTimespan = 60; // fckbankscoin: 1 minute
-static const int64 nTargetSpacing = 60; // fckbankscoin: 1 minute blocks
+static const int64 nTargetTimespan = 60; // Fckbankscoin: 60 seconds
+static const int64 nTargetSpacing = 600; // Fckbankscoin: 600s blocks
 static const int64 nInterval = nTargetTimespan / nTargetSpacing;
 
 // Thanks: Balthazar for suggesting the following fix
@@ -1989,7 +1989,7 @@ bool LoadBlockIndex(bool fAllowNew)
         pchMessageStart[1] = 0xc0;
         pchMessageStart[2] = 0xb8;
         pchMessageStart[3] = 0xdb;
-        hashGenesisBlock = uint256("0xf9ede31931074984f810f1d67795954984321b3cfa5f5b99e272dba51cd33e50");
+        hashGenesisBlock = uint256("0x6ca3cf39c1a2a68a7e6cbd8baa19f8e5671591851bb3ad6d115f79fce22dcdb4");
     }
 
     //
@@ -2010,7 +2010,7 @@ bool LoadBlockIndex(bool fAllowNew)
     
         
         // Genesis block
-        const char* pszTimestamp = "Building the coin that puts a middlefinger against the banks";
+        const char* pszTimestamp = "Building a river to flow people from the banks...";
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
@@ -2022,21 +2022,21 @@ bool LoadBlockIndex(bool fAllowNew)
         block.hashPrevBlock = 0;
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
-        block.nTime    = 1388283403; //epochtime
+        block.nTime    = 1388287628; //epochtime
         block.nBits    = 0x1e0ffff0;
-        block.nNonce   = 1821186;
+        block.nNonce   = 0;
 
         if (fTestNet)
         {
-            block.nTime    = 1387813473;
-            block.nNonce   = 2191614;
+            block.nTime    = 1388287628;
+            block.nNonce   = 576945;
         }
 
         //// debug print
         printf("%s\n", block.GetHash().ToString().c_str());
         printf("%s\n", hashGenesisBlock.ToString().c_str());
         printf("%s\n", block.hashMerkleRoot.ToString().c_str());
-        assert(block.hashMerkleRoot == uint256("0xfd3fdb5bdd271d38889caf4ae1f7e27f73e560e7aff518771e065b6076771fcf"));
+        assert(block.hashMerkleRoot == uint256("0xbc7d555022013f1186eb2aa53145214d6170919b3e3bfbe0c4d39d37a4a7f2ed"));
 
         // If genesis block hash does not match, then generate new genesis hash.
         if (true && block.GetHash() != hashGenesisBlock)

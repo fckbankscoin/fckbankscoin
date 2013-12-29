@@ -42,7 +42,7 @@ static const int64 MIN_TX_FEE = 10000;
 static const int64 MIN_RELAY_TX_FEE = MIN_TX_FEE;
 static const int64 MAX_MONEY = 84000000000 * COIN; // maximum number of coins
 static const int64 TOTAL_GENERATION = MAX_MONEY;
-static const double SERVICE_TAX_PERCENTAGE = 0.02976190476;
+static const double SERVICE_TAX_PERCENTAGE = 0.03;
 inline bool MoneyRange(int64 nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 static const int COINBASE_MATURITY = 15;
 // Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp.

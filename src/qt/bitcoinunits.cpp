@@ -45,13 +45,13 @@ QString BitcoinUnits::description(int unit)
 {
     switch(unit)
     {
-    case BTC: return QString("fckbankscoin");
-    case mBTC: return QString("millifckbankscoin (1 / 1,000)");
-    case uBTC: return QString("microfckbankscoin (1 / 1,000,000)");
+    case BTC: return QString("fckbankscoins");
+    case mBTC: return QString("Milli-fckbankscoins (1 / 1,000)");
+    case uBTC: return QString("Micro-fckbankscoins (1 / 1,000,000)");
     default: return QString("???");
     }
 }
-//a single unit (.00000001) of fckbankscoin is called a "wander."
+
 qint64 BitcoinUnits::factor(int unit)
 {
     switch(unit)
@@ -99,7 +99,7 @@ QString BitcoinUnits::format(int unit, qint64 n, bool fPlus)
     QString quotient_str = QString::number(quotient);
     QString remainder_str = QString::number(remainder).rightJustified(num_decimals, '0');
 
-    // Right-trim excess 0's after the decimal point
+    // Right-trim excess zeros after the decimal point
     int nTrim = 0;
     for (int i = remainder_str.size()-1; i>=2 && (remainder_str.at(i) == '0'); --i)
         ++nTrim;

@@ -1,4 +1,4 @@
-Fckbankscoin-Qt: Qt4 GUI for Fckbankscoin
+fckbankscoin-Qt: Qt4 GUI for fckbankscoin
 ===============================
 
 Build instructions
@@ -28,11 +28,17 @@ for Ubuntu >= 12.04 (please read the 'Berkely DB version warning' below):
         libboost-filesystem-dev libboost-program-options-dev libboost-thread-dev \
         libssl-dev libdb++-dev libminiupnpc-dev
 
-then execute the following from the top-level fckbankscoin directory:
+For Qt 5 you need the following, otherwise you get an error with lrelease when running qmake:
 
 ::
 
-    qmake-qt4
+    apt-get install qt5-qmake libqt5gui5 libqt5core5 libqt5dbus5 qttools5-dev-tools
+
+then execute the following:
+
+::
+
+    qmake
     make
 
 Alternatively, install `Qt Creator`_ and open the `fckbankscoin-qt.pro` file.
@@ -127,9 +133,9 @@ flag to qmake to control this:
 Berkely DB version warning
 ==========================
 
-A warning for people using the *static binary* version of Fckbankscoin on a Linux/UNIX-ish system (tl;dr: **Berkely DB databases are not forward compatible**).
+A warning for people using the *static binary* version of fckbankscoin on a Linux/UNIX-ish system (tl;dr: **Berkely DB databases are not forward compatible**).
 
-The static binary version of Fckbankscoin is linked against libdb4.8 (see also `this Debian issue`_).
+The static binary version of fckbankscoin is linked against libdb4.8 (see also `this Debian issue`_).
 
 Now the nasty thing is that databases from 5.X are not compatible with 4.X.
 

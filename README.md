@@ -1,7 +1,6 @@
-
 Fckbankscoin builds the river that flows the people from the banks.
 
-![Fckbankscoin Splash Image](https://raw.github.com/fckbankscoin/fckbankscoin/master/src/qt/res/images/splash2.jpg)
+![Fckbankscoin Splash Image](https://dl.dropboxusercontent.com/u/1895120/work/logos/fspot-red-large.png)
 
 Algorithm: Scrypt.
 

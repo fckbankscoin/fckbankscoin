@@ -1,4 +1,4 @@
-Fckbankscoin builds the river that flows the people from the banks.
+
 
 ![Fckbankscoin Splash Image](https://raw.github.com/fckbankscoin/fckbankscoin/master/src/qt/res/icons/bitcoin.png)
 

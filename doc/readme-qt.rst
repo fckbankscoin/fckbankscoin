@@ -38,8 +38,7 @@ then execute the following:
 
 ::
 
-    qmake
-    make
+    qmake && make
 
 Alternatively, install `Qt Creator`_ and open the `fckbankscoin-qt.pro` file.
 

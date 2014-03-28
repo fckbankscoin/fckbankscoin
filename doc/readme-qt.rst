@@ -57,6 +57,12 @@ Alternatively, install `Qt Creator`_ and open the `fckbankscoin-qt.pro` file.
 
 An executable named `fckbankscoin` will be built in the directory you are currently in.
 
+To load the program simply navigate to that directory in whatever file explorer you prefer and double click the fckbankscoin executable, or from a terminal just run:
+
+::
+    
+    ~/fckbankscoin/fckbankscoin
+
 .. _`Qt Creator`: http://qt-project.org/downloads/
 
 Mac OS X

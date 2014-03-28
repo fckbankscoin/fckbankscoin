@@ -45,7 +45,7 @@ clone the fckbanks repo and cd into the fckbankscoin directory:
 ::
 
     git clone https://github.com/fckbankscoin/fckbankscoin
-    
+    cd fckbankscoin
 
 then execute the following in the fckbankscoin directory:
 
@@ -55,7 +55,7 @@ then execute the following in the fckbankscoin directory:
 
 Alternatively, install `Qt Creator`_ and open the `fckbankscoin-qt.pro` file.
 
-An executable named `fckbankscoin` will be built.
+An executable named `fckbankscoin` will be built in the directory you are currently in.
 
 .. _`Qt Creator`: http://qt-project.org/downloads/
 

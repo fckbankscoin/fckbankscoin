@@ -34,7 +34,20 @@ For Qt 5 you need the following, otherwise you get an error with lrelease when r
 
     sudo apt-get install qt5-qmake libqt5gui5 libqt5core5 libqt5dbus5 qttools5-dev-tools
 
-then execute the following:
+install git if you haven't already:
+
+::
+
+    sudo apt-get install git
+
+clone the fckbanks repo and cd into the fckbankscoin directory:
+
+::
+
+    git clone https://github.com/fckbankscoin/fckbankscoin
+    
+
+then execute the following in the fckbankscoin directory:
 
 ::
 
@@ -42,7 +55,7 @@ then execute the following:
 
 Alternatively, install `Qt Creator`_ and open the `fckbankscoin-qt.pro` file.
 
-An executable named `fckbankscoin-qt` will be built.
+An executable named `fckbankscoin` will be built.
 
 .. _`Qt Creator`: http://qt-project.org/downloads/
 

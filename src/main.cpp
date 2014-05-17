@@ -49,8 +49,6 @@ bool fBenchmark = false;
 bool fTxIndex = false;
 unsigned int nCoinCacheSize = 5000;
 
-const int64 nHardforkStartTime =  1400292000; // Hard fork to scrypt-N on May 16, 2014 @ 10:00 PM EST
-
 /** Fees smaller than this (in satoshi) are considered zero fee (for transaction creation) */
 int64 CTransaction::nMinTxFee = 100000;
 /** Fees smaller than this (in satoshi) are considered zero fee (for relaying) */
@@ -1062,39 +1060,6 @@ uint256 static GetOrphanRoot(const CBlockHeader* pblock)
     while (mapOrphanBlocks.count(pblock->hashPrevBlock))
         pblock = mapOrphanBlocks[pblock->hashPrevBlock];
     return pblock->GetHash();
-}
-
-const unsigned char minNfactor = 10;
-const unsigned char maxNfactor = 30;
-
-unsigned char GetNfactor(int64 nTimestamp) {
-    int l = 0;
-
-    if (nTimestamp <= nHardforkStartTime) {
-        return 9; // standard Scrypt
-    } else if (nTimestamp > nHardforkStartTime) {
-      return minNfactor;
-    }
-
-    int64 s = nTimestamp - nHardforkStartTime;
-    while ((s >> 1) > 3) {
-      l += 1;
-      s >>= 1;
-    }
-
-    s &= 3;
-
-    int n = (l * 158 + s * 28 - 2670) / 100;
-
-    if (n < 0) n = 0;
-
-    if (n > 255)
-        printf( "GetNfactor(%lld) - something wrong(n == %d)\n", nTimestamp, n );
-
-    unsigned char N = (unsigned char) n;
-    //printf("GetNfactor: %d -> %d %d : %d / %d\n", nTimestamp - nChainStartTimeNAdaptive, l, s, n, min(max(N, minNfactor), maxNfactor));
-
-    return min(max(N, minNfactor), maxNfactor);
 }
 
 int64 static GetBlockValue(int nHeight, int64 nFees)
@@ -2967,7 +2932,6 @@ bool InitBlockIndex() {
         //assert(hash == hashGenesisBlock);
 
    // If genesis block hash does not match, then generate new genesis hash.
-/*
         if (false && block.GetHash() != hashGenesisBlock)
         {
             printf("Searching for genesis block...\n");
@@ -2975,15 +2939,11 @@ bool InitBlockIndex() {
             // creating a different genesis block:
             uint256 hashTarget = CBigNum().SetCompact(block.nBits).getuint256();
             uint256 thash;
-            //char scratchpad[SCRYPT_SCRATCHPAD_SIZE];
-	    unsigned long int scrypt_scratpad_size_current_block = ((1 << (GetNfactor(pblock->nTime) + 1)) * 128 ) + 63;
-
-            char scratchpad[scrypt_scratpad_size_current_block];
+            char scratchpad[SCRYPT_SCRATCHPAD_SIZE];
 
             loop
             {
-                //scrypt_1024_1_1_256_sp_generic(BEGIN(block.nVersion), BEGIN(thash), scratchpad);
-	  	scrypt_N_1_1_256_sp_generic(BEGIN(pblock->nVersion), BEGIN(thash), scratchpad, GetNfactor(pblock->nTime));
+                scrypt_1024_1_1_256_sp_generic(BEGIN(block.nVersion), BEGIN(thash), scratchpad);
                 if (thash <= hashTarget)
                     break;
                 if ((block.nNonce & 0xFFF) == 0)
@@ -3001,7 +2961,6 @@ bool InitBlockIndex() {
             printf("block.nNonce = %u \n", block.nNonce);
             printf("block.GetHash = %s\n", block.GetHash().ToString().c_str());
         }
-*/
 
         block.print();
         assert(block.GetHash() == hashGenesisBlock);
@@ -4812,14 +4771,23 @@ void static fckbankscoinMiner(CWallet *pwallet)
             unsigned int nHashesDone = 0;
 
             uint256 thash;
-            //char scratchpad[SCRYPT_SCRATCHPAD_SIZE];
-	    unsigned long int scrypt_scratpad_size_current_block = ((1 << (GetNfactor(pblock->nTime) + 1)) * 128 ) + 63;
-	    char scratchpad[scrypt_scratpad_size_current_block];
+            char scratchpad[SCRYPT_SCRATCHPAD_SIZE];
             loop
             {
+#if defined(USE_SSE2)
+                // Detection would work, but in cases where we KNOW it always has SSE2,
+                // it is faster to use directly than to use a function pointer or conditional.
+#if defined(_M_X64) || defined(__x86_64__) || defined(_M_AMD64) || (defined(MAC_OSX) && defined(__i386__))
+                // Always SSE2: x86_64 or Intel MacOS X
+                scrypt_1024_1_1_256_sp_sse2(BEGIN(pblock->nVersion), BEGIN(thash), scratchpad);
+#else
+                // Detect SSE2: 32bit x86 Linux or Windows
+                scrypt_1024_1_1_256_sp(BEGIN(pblock->nVersion), BEGIN(thash), scratchpad);
+#endif
+#else
                 // Generic scrypt
-                //scrypt_1024_1_1_256_sp_generic(BEGIN(pblock->nVersion), BEGIN(thash), scratchpad);
-		scrypt_N_1_1_256_sp_generic(BEGIN(pblock->nVersion), BEGIN(thash), scratchpad, GetNfactor(pblock->nTime));
+                scrypt_1024_1_1_256_sp_generic(BEGIN(pblock->nVersion), BEGIN(thash), scratchpad);
+#endif
 
                 if (thash <= hashTarget)
                 {
